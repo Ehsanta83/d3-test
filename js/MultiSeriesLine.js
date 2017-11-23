@@ -1,5 +1,4 @@
 // @see https://bl.ocks.org/mbostock/3884955
-// @todo: dynamic keys
 
 function multiseriesline()
 {
@@ -33,20 +32,20 @@ function multiseriesline()
               l_line = d3.line()
                          .curve( d3.curveBasis )
                          .x(function( d ) { return l_data.x( d.date ); } )
-                         .y(function( d ) { return l_data.y( d.temperature ); } ),
+                         .y(function( d ) { return l_data.y( d.value ); } ),
               l_series = p_chartdata.key.map( function( id ) {
                   return {
                       id: id,
                       values: p_chartdata.data.map( function( d ) {
-                          return { date: l_parseTime( d.date ), temperature: +d[id] };
+                          return { date: l_parseTime( d.date ), value: +d[id] };
                       })
                   };
               });
 
         l_data.x.domain( d3.extent( p_chartdata.data, function( d ) { return l_parseTime( d.date ); } ) );
         l_data.y.domain( [
-            d3.min( l_series, function( c ) { return d3.min( c.values, function( d ) { return d.temperature; } ); } ),
-            d3.max( l_series, function( c ) { return d3.max( c.values, function( d ) { return d.temperature; } ); } )
+            d3.min( l_series, function( c ) { return d3.min( c.values, function( d ) { return d.value; } ); } ),
+            d3.max( l_series, function( c ) { return d3.max( c.values, function( d ) { return d.value; } ); } )
         ] );
         l_data.z.domain( l_series.map( function( c ) { return c.id; } ) );
 
@@ -65,7 +64,7 @@ function multiseriesline()
                     .attr( "y", 6 )
                     .attr( "dy", "0.71em" )
                     .attr( "fill", "#000" )
-                    .text( "Temperature, ºF" );
+                    .text( p_chartdata.xaxistext );
 
         var l_serie = l_g.selectAll( ".city" )
             .data( l_series )
@@ -79,7 +78,7 @@ function multiseriesline()
 
         l_serie.append( "text" )
             .datum( function( d ) { return { id: d.id, value: d.values[d.values.length - 1] }; } )
-            .attr( "transform", function( d ) { return "translate(" + l_data.x( d.value.date ) + "," + l_data.y( d.value.temperature ) + ")"; } )
+            .attr( "transform", function( d ) { return "translate(" + l_data.x( d.value.date ) + "," + l_data.y( d.value.value ) + ")"; } )
             .attr( "x", 3 )
             .attr( "dy", "0.35em" )
             .style( "font", "10px sans-serif" )

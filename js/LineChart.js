@@ -1,5 +1,4 @@
 // @see https://bl.ocks.org/mbostock/3884955
-// @todo: dynamic keys
 
 function linechart()
 {
@@ -54,7 +53,7 @@ function linechart()
                    .attr( "y", 6 )
                    .attr( "dy", "0.71em" )
                    .attr( "text-anchor", "end" )
-                   .text( "Price ($)" );
+                   .text( p_chartdata.xaxistext );
 
         l_g.append( "path" )
               .datum( l_chartdata )

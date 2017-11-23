@@ -1,5 +1,6 @@
 {
   "key": [ "New York", "San Francisco", "Austin"],
+  "xaxistext" : "Temperature, ºF",
   "data": [
     {
       "date": 20111001,
