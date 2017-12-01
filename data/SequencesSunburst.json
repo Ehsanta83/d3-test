@@ -1,7 +1,7 @@
 {
   "sunburstwidth": 750,
   "sunburstheight": 600,
-  "key": [ "home", "product", "search", "account", "other" ],
+  "key": [ "home", "product", "search", "account", "other", "end" ],
   "color": {
     "home": "#5687d1",
     "product": "#7b615c",
