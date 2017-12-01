@@ -9,6 +9,7 @@
     <script src="js/AreaChart.js"></script>
     <script src="js/ScatterplotMatrix.js"></script>
     <script src="js/DonutChart.js"></script>
+    <script src="js/SequencesSunburst.js"></script>
 
 </head>
 <body>
@@ -31,11 +32,27 @@
         </tr>
         <tr>
             <th>Donut Chart</th>
-            <th></th>
+            <th>Sequences Sunburst</th>
         </tr>
         <tr>
             <td><div id="donutchart-chart"></div></td>
-            <td></td>
+            <td>
+                <div id="sequencessunburst">
+                    <div id="sequencessunburst-main">
+                        <div id="sequencessunburst-sequence"></div>
+                        <div id="sequencessunburst-chart">
+                            <div id="sequencessunburst-explanation" style="visibility: hidden;">
+                                <span id="sequencessunburst-percentage"></span><br/>
+                                of visits begin with this sequence of pages
+                            </div>
+                        </div>
+                    </div>
+                    <div id="sequencessunburst-sidebar">
+                        <input type="checkbox" id="sequencessunburst-togglelegend"> Legend<br/>
+                        <div id="sequencessunburst-legend" style="visibility: hidden;"></div>
+                    </div>
+                </div>
+            </td>
         </tr>
     </table>
 </body>
