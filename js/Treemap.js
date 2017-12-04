@@ -15,27 +15,27 @@ function treemap()
         const l_margin = {top: 40, right: 10, bottom: 10, left: 10},
               l_width = self.state.data.width - l_margin.left - l_margin.right,
               l_height = self.state.data.height - l_margin.top - l_margin.bottom,
-              color = d3.scaleOrdinal().range(d3.schemeCategory20c),
-              treemap = d3.treemap().size([l_width, l_height]),
+              l_color = d3.scaleOrdinal().range(d3.schemeCategory20c),
+              l_treemap = d3.treemap().size([l_width, l_height]),
               l_chart = d3.select( "#" + self.state.id + "-chart" )
                   .style( "position", "relative")
                   .style( "width", ( l_width + l_margin.left + l_margin.right) + "px" )
                   .style( "height", ( l_height + l_margin.top + l_margin.bottom) + "px" )
                   .style( "left", l_margin.left + "px" )
                   .style( "top", l_margin.top + "px" ),
-              root = d3.hierarchy(p_chartdata.data, (d) => d.children)
+              l_root = d3.hierarchy(p_chartdata.data, (d) => d.children)
                   .sum((d) => d.size),
-              tree = treemap(root);
+              l_tree = l_treemap(l_root);
 
-              node = l_chart.datum(root).selectAll(".node")
-                      .data(tree.leaves())
+              l_node = l_chart.datum(l_root).selectAll(".node")
+                      .data(l_tree.leaves())
                   .enter().append("div")
                       .attr("class", "node")
                       .style("left", (d) => d.x0 + "px")
                       .style("top", (d) => d.y0 + "px")
                       .style("width", (d) => Math.max(0, d.x1 - d.x0 - 1) + "px")
                       .style("height", (d) => Math.max(0, d.y1 - d.y0  - 1) + "px")
-                      .style("background", (d) => color(d.parent.data.name))
+                      .style("background", (d) => l_color(d.parent.data.name))
                       .text((d) => d.data.name);
 
               d3.selectAll("input").on("change", function change() {
@@ -46,7 +46,7 @@ function treemap()
                   const newRoot = d3.hierarchy(p_chartdata.data, (d) => d.children)
                       .sum(value);
 
-                  node.data(treemap(newRoot).leaves())
+                  l_node.data(l_treemap(newRoot).leaves())
                       .transition()
                           .duration(1500)
                           .style("left", (d) => d.x0 + "px")
