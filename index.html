@@ -10,6 +10,7 @@
     <script src="js/ScatterplotMatrix.js"></script>
     <script src="js/DonutChart.js"></script>
     <script src="js/SequencesSunburst.js"></script>
+    <script src="js/Treemap.js"></script>
 
 </head>
 <body>
@@ -53,6 +54,22 @@
                     </div>
                 </div>
             </td>
+        </tr>
+        <tr>
+            <th>Treemap</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                <div id="treemap-parent">
+                    <form>
+                        <label><input type="radio" name="mode" value="size" checked> Size</label>
+                        <label><input type="radio" name="mode" value="count"> Count</label>
+                    </form>
+                    <div id="treemap-chart"></div>
+                </div>
+            </td>
+            <td></td>
         </tr>
     </table>
 </body>
