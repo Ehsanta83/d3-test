@@ -13,6 +13,8 @@ function sequencessunburst()
     d3.json( self.state.data.url, function(error, p_chartdata) {
         if (error) throw error;
 
+        const l_chart = d3.select( "#" + self.state.id );
+
         // Dimensions of sunburst.
         var width = p_chartdata.sunburstwidth;
         var height = p_chartdata.sunburstheight;
@@ -29,7 +31,7 @@ function sequencessunburst()
         // Total size of all segments; we set this later, after loading the data.
         var totalSize = 0;
 
-        var vis = d3.select("#" + self.state.id + "-chart").append("svg:svg")
+        var vis = l_chart.select("#" + self.state.id + "-chart").append("svg:svg")
             .attr("width", width)
             .attr("height", height)
             .append("svg:g")
@@ -52,7 +54,7 @@ function sequencessunburst()
             // Basic setup of page elements.
             initializeBreadcrumbTrail();
             drawLegend();
-            d3.select("#" + self.state.id + "-togglelegend").on("click", toggleLegend);
+            l_chart.select("#" + self.state.id + "-togglelegend").on("click", toggleLegend);
 
             // Bounding circle underneath the sunburst, to make it easier to detect
             // when the mouse leaves the parent g.
@@ -82,7 +84,7 @@ function sequencessunburst()
                 .on("mouseover", mouseover);
 
             // Add the mouseleave handler to the bounding circle.
-            d3.select("#" + self.state.id + "-container").on("mouseleave", mouseleave);
+            l_chart.select("#" + self.state.id + "-container").on("mouseleave", mouseleave);
 
             // Get total size of the tree = value of root node from partition.
             totalSize = path.datum().value;
@@ -96,10 +98,10 @@ function sequencessunburst()
                 percentageString = "< 0.1%";
             }
 
-            d3.select("#" + self.state.id + "-percentage")
+            l_chart.select("#" + self.state.id + "-percentage")
                 .text(percentageString);
 
-            d3.select("#" + self.state.id + "-explanation")
+            l_chart.select("#" + self.state.id + "-explanation")
                 .style("visibility", "");
 
             var sequenceArray = d.ancestors().reverse();
@@ -107,7 +109,7 @@ function sequencessunburst()
             updateBreadcrumbs(sequenceArray, percentageString);
 
             // Fade all the segments.
-            d3.selectAll("path")
+            l_chart.selectAll("path")
                 .style("opacity", 0.3);
 
             // Then highlight only those that are an ancestor of the current segment.
@@ -121,14 +123,14 @@ function sequencessunburst()
         // Restore everything to full opacity when moving off the visualization.
         function mouseleave(d) {
             // Hide the breadcrumb trail
-            d3.select("#trail")
+            l_chart.select("#trail")
                 .style("visibility", "hidden");
 
             // Deactivate all segments during transition.
-            d3.selectAll("path").on("mouseover", null);
+            l_chart.selectAll("path").on("mouseover", null);
 
             // Transition each segment to full opacity and then reactivate it.
-            d3.selectAll("path")
+            l_chart.selectAll("path")
                 .transition()
                 .duration(1000)
                 .style("opacity", 1)
@@ -136,13 +138,13 @@ function sequencessunburst()
                     d3.select(this).on("mouseover", mouseover);
                 });
 
-            d3.select("#" + self.state.id + "-explanation")
+            l_chart.select("#" + self.state.id + "-explanation")
                 .style("visibility", "hidden");
         }
 
         function initializeBreadcrumbTrail() {
             // Add the svg area.
-            var trail = d3.select("#" + self.state.id + "-sequence").append("svg:svg")
+            var trail = l_chart.select("#" + self.state.id + "-sequence").append("svg:svg")
                 .attr("width", width)
                 .attr("height", 50)
                 .attr("id", "trail");
@@ -169,7 +171,7 @@ function sequencessunburst()
         // Update the breadcrumb trail to show the current sequence and percentage.
         function updateBreadcrumbs(nodeArray, percentageString) {
             // Data join; key function combines name and depth (= position in sequence).
-            var trail = d3.select("#trail")
+            var trail = l_chart.select("#trail")
                 .selectAll("g")
                 .data(nodeArray, function(d) { return d.data.name + d.depth; });
 
@@ -196,7 +198,7 @@ function sequencessunburst()
             });
 
             // Now move and update the percentage at the end.
-            d3.select("#trail").select("#endlabel")
+            l_chart.select("#trail").select("#endlabel")
                 .attr("x", (nodeArray.length + 0.5) * (b.w + b.s))
                 .attr("y", b.h / 2)
                 .attr("dy", "0.35em")
@@ -204,7 +206,7 @@ function sequencessunburst()
                 .text(percentageString);
 
             // Make the breadcrumb trail visible, if it's hidden.
-            d3.select("#trail")
+            l_chart.select("#trail")
                 .style("visibility", "");
 
         }
@@ -215,7 +217,7 @@ function sequencessunburst()
                 w: 75, h: 30, s: 3, r: 3
             };
 
-            var legend = d3.select("#" + self.state.id + "-legend").append("svg:svg")
+            var legend = l_chart.select("#" + self.state.id + "-legend").append("svg:svg")
                 .attr("width", li.w)
                 .attr("height", d3.keys(colors).length * (li.h + li.s));
 
@@ -242,7 +244,7 @@ function sequencessunburst()
         }
 
         function toggleLegend() {
-            var legend = d3.select("#" + self.state.id + "-legend");
+            var legend = l_chart.select("#" + self.state.id + "-legend");
             if (legend.style("visibility") == "hidden")
             {
                 legend.style("visibility", "");
@@ -253,7 +255,6 @@ function sequencessunburst()
             }
         }
 
-        const l_chart = d3.select( "#" + self.state.id );
         l_chart.select( function() { return this.parentNode } ).style( "overflow", "scroll" );
         l_chart.style( "font-family", "Open Sans', sans-serif" )
                .style( "font-size", "12px" )
