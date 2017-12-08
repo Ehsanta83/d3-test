@@ -56,6 +56,7 @@ function treemap()
               });
 
         const l_container = d3.select( "#" + self.state.id + "-parent" );
+        l_container.style( "color", "#000" );
         l_container.select( function() { return this.parentNode } ).style( "overflow", "scroll" );
         l_container.selectAll( ".node" ).style( "border", "solid 1px white" )
                                         .style( "font", "10px sans-serif" )
